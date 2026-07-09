@@ -17,8 +17,10 @@ import land.oras.ContainerRef;
 import land.oras.Layer;
 import land.oras.LocalPath;
 import land.oras.Manifest;
+import land.oras.OCI;
 import land.oras.Registry;
 import land.oras.exception.OrasException;
+import land.oras.policy.ContainersPolicy;
 import land.oras.utils.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,6 +161,7 @@ public class RegistryClient {
                 ARTIFACT_MEDIA_TYPE,
                 annotations,
                 Config.empty(),
+                OCI.PushOptions.defaults(),
                 LocalPath.of(source, CONTENT_MEDIA_TYPE.formatted(compressionMediaType)),
                 LocalPath.of(logoFile, "image/png"));
     }
@@ -190,6 +193,7 @@ public class RegistryClient {
                         config.credentials.getUsername(),
                         config.credentials.getPassword().getPlainText())
                 .withRegistry(config.registryUrl)
+                .withPolicy(ContainersPolicy.newPolicy())
                 .build();
     }
 
